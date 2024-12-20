@@ -6,7 +6,9 @@ impl Serialize for Certificates {
         &self,
         serializer: &'se mut Serializer<W>,
     ) -> cbor_event::Result<&'se mut Serializer<W>> {
-        serializer.write_tag(258)?;
+        if self.get_set_type() == CborSetType::Tagged {
+            serializer.write_tag(258)?;
+        }
         serializer.write_array(Len::Len(self.len() as u64))?;
         for element in &self.certs {
             element.serialize(serializer)?;

@@ -131,11 +131,11 @@ impl PlutusScripts {
         self.scripts.contains(&script)
     }
 
-    pub(crate) fn get_set_type(&self, language: &Language) -> Option<CborSetType> {
+    pub fn get_set_type(&self, language: &Language) -> Option<CborSetType> {
         self.cbor_set_type.as_ref().map(|m| m.get(language).cloned()).flatten()
     }
 
-    pub(crate) fn set_set_type(&mut self, cbor_set_type: CborSetType, language: &Language) {
+    pub fn set_set_type(&mut self, cbor_set_type: CborSetType, language: &Language) {
         if self.cbor_set_type.is_none() {
             self.cbor_set_type = Some(HashMap::new());
         }

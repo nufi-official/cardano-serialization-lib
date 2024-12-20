@@ -81,11 +81,11 @@ impl BootstrapWitnesses {
         Self::new_from_prepared_fields(witnesses, dedup)
     }
 
-    pub(crate) fn get_set_type(&self) -> CborSetType {
+    pub fn get_set_type(&self) -> CborSetType {
         self.cbor_set_type.clone()
     }
 
-    pub(crate) fn set_set_type(&mut self, cbor_set_type: CborSetType) {
+    pub fn set_set_type(&mut self, cbor_set_type: CborSetType) {
         self.cbor_set_type = cbor_set_type;
     }
 

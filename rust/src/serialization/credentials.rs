@@ -6,7 +6,9 @@ impl cbor_event::se::Serialize for Credentials {
         &self,
         serializer: &'se mut Serializer<W>,
     ) -> cbor_event::Result<&'se mut Serializer<W>> {
-        serializer.write_tag(258)?;
+        if self.get_set_type() == CborSetType::Tagged {
+            serializer.write_tag(258)?;
+        }
         serializer.write_array(Len::Len(self.len() as u64))?;
         for element in &self.credentials {
             element.serialize(serializer)?;

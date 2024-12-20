@@ -1,19 +1,16 @@
+use crate::*;
+use itertools::Itertools;
+use schemars::JsonSchema;
+use std::cmp::Ordering;
+use std::collections::HashSet;
 use std::hash::{Hash, Hasher};
+use std::iter::Map;
 use std::ops::Deref;
 use std::rc::Rc;
 use std::slice;
-use std::iter::Map;
-use std::collections::HashSet;
-use std::cmp::Ordering;
-use itertools::Itertools;
-use schemars::JsonSchema;
-use crate::*;
 
 #[wasm_bindgen]
-#[derive(
-    Clone,
-    Debug,
-)]
+#[derive(Clone, Debug)]
 pub struct VotingProposals {
     proposals: Vec<Rc<VotingProposal>>,
     dedup: HashSet<Rc<VotingProposal>>,
@@ -93,21 +90,19 @@ impl VotingProposals {
         Self::new_from_prepared_fields(proposals, dedup)
     }
 
-    pub(crate) fn get_set_type(&self) -> CborSetType {
+    pub fn get_set_type(&self) -> CborSetType {
         self.cbor_set_type.clone()
     }
 
-    pub(crate) fn set_set_type(&mut self, cbor_set_type: CborSetType) {
+    pub fn set_set_type(&mut self, cbor_set_type: CborSetType) {
         self.cbor_set_type = cbor_set_type;
     }
 }
 
 impl<'a> IntoIterator for &'a VotingProposals {
     type Item = &'a VotingProposal;
-    type IntoIter = Map<
-        slice::Iter<'a, Rc<VotingProposal>>,
-        fn(&'a Rc<VotingProposal>) -> &'a VotingProposal,
-    >;
+    type IntoIter =
+        Map<slice::Iter<'a, Rc<VotingProposal>>, fn(&'a Rc<VotingProposal>) -> &'a VotingProposal>;
 
     fn into_iter(self) -> Self::IntoIter {
         self.proposals.iter().map(|rc| rc.as_ref())
@@ -155,12 +150,10 @@ impl serde::Serialize for VotingProposals {
 
 impl<'de> serde::de::Deserialize<'de> for VotingProposals {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where
-            D: serde::de::Deserializer<'de>,
+    where
+        D: serde::de::Deserializer<'de>,
     {
-        let vec = <Vec<_> as serde::de::Deserialize>::deserialize(
-            deserializer,
-        )?;
+        let vec = <Vec<_> as serde::de::Deserialize>::deserialize(deserializer)?;
         Ok(Self::from_vec(vec))
     }
 }

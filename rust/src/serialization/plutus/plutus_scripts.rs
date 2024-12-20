@@ -1,5 +1,5 @@
-use crate::*;
 use crate::serialization::utils::{is_break_tag, skip_set_tag};
+use crate::*;
 
 impl cbor_event::se::Serialize for PlutusScripts {
     fn serialize<'se, W: Write>(
@@ -45,7 +45,6 @@ impl PlutusScripts {
         }
         Ok(serializer)
     }
-
 }
 
 impl Deserialize for PlutusScripts {
@@ -65,7 +64,7 @@ impl Deserialize for PlutusScripts {
             }
             Ok(())
         })()
-            .map_err(|e| e.annotate("PlutusScripts"))?;
+        .map_err(|e| e.annotate("PlutusScripts"))?;
 
         let set_tag = if has_set_tag {
             Some(CborSetType::Tagged)
@@ -78,7 +77,10 @@ impl Deserialize for PlutusScripts {
 }
 
 impl PlutusScripts {
-    pub(crate) fn deserialize_with_version<R: BufRead + Seek>(raw: &mut Deserializer<R>, version: &Language) -> Result<Self, DeserializeError> {
+    pub(crate) fn deserialize_with_version<R: BufRead + Seek>(
+        raw: &mut Deserializer<R>,
+        version: &Language,
+    ) -> Result<Self, DeserializeError> {
         let mut arr = Vec::new();
         let has_set_tag = skip_set_tag(raw)?;
         (|| -> Result<_, DeserializeError> {
@@ -94,7 +96,7 @@ impl PlutusScripts {
             }
             Ok(())
         })()
-            .map_err(|e| e.annotate("PlutusScripts"))?;
+        .map_err(|e| e.annotate("PlutusScripts"))?;
 
         let set_tag = if has_set_tag {
             Some(CborSetType::Tagged)

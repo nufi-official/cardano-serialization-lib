@@ -683,11 +683,11 @@ impl PlutusList {
     }
 
     #[allow(dead_code)]
-    pub(crate) fn set_set_type(&mut self, set_type: CborSetType) {
+    pub fn set_set_type(&mut self, set_type: CborSetType) {
         self.cbor_set_type = Some(set_type);
     }
 
-    pub(crate) fn get_set_type(&self) -> Option<CborSetType> {
+    pub fn get_set_type(&self) -> Option<CborSetType> {
         self.cbor_set_type.clone()
     }
 }
